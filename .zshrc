@@ -75,6 +75,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 alias ls='ls --color'
 #alias vim='nvim'
 alias c='clear'
+alias cd='z'
 
 # Shell integrations
 eval "$(/home/hitman/.fzf/bin/fzf --zsh)"
