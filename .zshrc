@@ -77,5 +77,7 @@ alias ls='ls --color'
 alias c='clear'
 
 # Shell integrations
-eval "$(fzf --zsh)"
+eval "$(/home/hitman/.fzf/bin/fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
