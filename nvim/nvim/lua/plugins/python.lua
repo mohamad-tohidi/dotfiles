@@ -1,10 +1,23 @@
+-- Tell ty where the venv is (reads VIRTUAL_ENV or finds .venv automatically)
+vim.lsp.config('ty', {
+  settings = {
+    ty = {
+      -- ty auto-detects .venv in project root, no extra config needed for uv
+    },
+  },
+})
+
+-- Enable ty LSP (required for nvim >= 0.11)
+vim.lsp.enable('ty')
+
 return {
+  -- Disable pyright, use ty instead
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ty = {},       -- ty language server (astral type checker)
-        pyright = { enabled = false },  -- disable pyright, use ty instead
+        pyright      = { enabled = false },
+        basedpyright = { enabled = false },
       },
     },
   },
@@ -14,22 +27,19 @@ return {
     "linux-cultist/venv-selector.nvim",
     branch = "regexp",
     dependencies = { "neovim/nvim-lspconfig" },
+    ft = "python",
+    keys = { { "<leader>cv", "<cmd>VenvSelect<cr>", desc = "Select venv" } },
     opts = {
       settings = {
         search = {
-          -- find .venv created by uv
           uv = {
             command = "fd python$ .venv/bin --full-path --color never",
           },
         },
       },
     },
-    -- auto-select on open
-    ft = "python",
-    keys = { { "<leader>cv", "<cmd>VenvSelect<cr>", desc = "Select venv" } },
     config = function(_, opts)
       require("venv-selector").setup(opts)
-      -- auto-activate on BufEnter for python files
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "*.py",
         callback = function()
