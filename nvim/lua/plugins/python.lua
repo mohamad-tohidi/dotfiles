@@ -1,39 +1,29 @@
+vim.lsp.config("ty", {})
+vim.lsp.enable("ty")
+
 return {
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ty = {},
-        pyright = {
-          enabled = false,
-        },
+        pyright = { enabled = false },
+        basedpyright = { enabled = false },
       },
     },
   },
 
+  -- uv.nvim: auto-activates uv venv, no manual autocmd needed
+  {
+    "benomahony/uv.nvim",
+    ft = "python",
+  },
+
+  -- venv-selector: just for manual override via <leader>cv
   {
     "linux-cultist/venv-selector.nvim",
-    branch = "regexp",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
+    dependencies = { "neovim/nvim-lspconfig" },
     ft = "python",
-    keys = {
-      { "<leader>cv", "<cmd>VenvSelect<cr>", desc = "Select venv" },
-    },
-    opts = {
-      search = {
-        uv = {
-          command = "fd python$ .venv/bin --full-path --color never",
-        },
-      },
-      options = {
-        enable_cached_venvs = true,
-        cached_venv_automatic_activation = true,
-      },
-    },
-    config = function(_, opts)
-      require("venv-selector").setup(opts)
-    end,
+    keys = { { "<leader>cv", "<cmd>VenvSelect<cr>", desc = "Select venv" } },
+    opts = {},
   },
 }
